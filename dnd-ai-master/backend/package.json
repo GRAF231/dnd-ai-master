@@ -1,0 +1,41 @@
+{
+  "name": "dnd-ai-master-backend",
+  "version": "1.0.0",
+  "description": "Backend for AI D&D Master Service",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec node --loader ts-node/esm src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:init": "node src/scripts/initDb.js"
+  },
+  "keywords": [
+    "dnd",
+    "ai",
+    "claude",
+    "fastify"
+  ],
+  "author": "Орхан Абдуллаев",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.61.0",
+    "@fastify/cors": "^11.1.0",
+    "@fastify/websocket": "^11.2.0",
+    "dice-typescript": "^1.6.1",
+    "dotenv": "^17.2.2",
+    "fastify": "^5.5.0",
+    "openai": "^5.19.1",
+    "socket.io": "^4.8.1",
+    "sqlite3": "^5.1.7",
+    "uuid": "^11.1.0",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "nodemon": "^3.1.10",
+    "pino-pretty": "^13.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

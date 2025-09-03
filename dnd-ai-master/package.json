@@ -1,0 +1,27 @@
+{
+  "name": "dnd-ai-master",
+  "version": "0.1.0",
+  "description": "AI D&D Master Service with Claude 3.5 Sonnet",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:frontend\" \"pnpm dev:backend\"",
+    "dev:frontend": "cd frontend && pnpm dev",
+    "dev:backend": "cd backend && pnpm dev",
+    "build": "pnpm build:frontend && pnpm build:backend",
+    "build:frontend": "cd frontend && pnpm build",
+    "build:backend": "cd backend && pnpm build",
+    "start": "pnpm start:backend",
+    "start:backend": "cd backend && pnpm start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "install:all": "pnpm install && cd frontend && pnpm install && cd ../backend && pnpm install"
+  },
+  "keywords": ["dnd", "ai", "claude", "rpg", "webrtc"],
+  "author": "Орхан Абдуллаев",
+  "license": "MIT",
+  "packageManager": "pnpm@8.15.0",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
