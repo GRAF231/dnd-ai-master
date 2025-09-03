@@ -54,15 +54,21 @@ export class DMAgentService {
       { role: 'system', content: this.systemPrompt }
     ];
     
+    // Добавляем информацию о комнате и контексте
+    let contextInfo = 'КОНТЕКСТ СЕССИИ:\n';
+    contextInfo += `Комната: ${request.roomId}\n`;
+    
     if (request.context) {
-      let contextInfo = 'КОНТЕКСТ СЕССИИ:\n';
       if (request.context.currentScene) contextInfo += `Сцена: ${request.context.currentScene}\n`;
       if (request.context.currentObjective) contextInfo += `Цель: ${request.context.currentObjective}\n`;
       if (request.context.activeNPCs?.length) contextInfo += `Активные NPC: ${request.context.activeNPCs.join(', ')}\n`;
       if (request.context.recentHistory?.length) contextInfo += `Недавние события:\n${request.context.recentHistory.join('\n')}\n`;
-      if (contextInfo.length > 'КОНТЕКСТ СЕССИИ:\n'.length) {
-        messages.push({ role: 'system', content: contextInfo });
-      }
+    }
+    
+    contextInfo += `\n⚠️ ВАЖНО: При использовании character_sheet tool всегда используй room_id: "${request.roomId}"\n`;
+    
+    if (contextInfo.length > 'КОНТЕКСТ СЕССИИ:\n'.length) {
+      messages.push({ role: 'system', content: contextInfo });
     }
     
     const playerPrefix = request.playerName ? `${request.playerName}: ` : '';

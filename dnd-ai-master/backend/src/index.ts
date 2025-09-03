@@ -5,6 +5,7 @@ import cors from '@fastify/cors';
 import websocket from '@fastify/websocket';
 import { Server } from 'socket.io';
 import { dmRoutes } from './routes/dm.js';
+import charactersRoutes from './routes/characters.js';
 import { config } from './utils/config.js';
 
 const fastify = Fastify({
@@ -24,6 +25,7 @@ await fastify.register(websocket);
 
 // Регистрация роутов
 await fastify.register(dmRoutes, { prefix: '/api' });
+await fastify.register(charactersRoutes, { prefix: '/api' });
 
 // Socket.IO для real-time
 const io = new Server(fastify.server, {
