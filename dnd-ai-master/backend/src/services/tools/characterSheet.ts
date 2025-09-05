@@ -294,63 +294,60 @@ export class CharacterSheetService implements BaseTool {
 
   getToolDefinition(): ToolDefinition {
     return {
-      type: "function",
-      function: {
-        name: "character_sheet",
-        description: "Создание и управление персонажами D&D 5e. Поддерживает создание, получение и обновление персонажей. Используй 'find' для поиска персонажа по имени, затем 'get' с полученным ID для детальной информации.",
-        parameters: {
-          type: "object",
-          properties: {
-            action: {
-              type: "string",
-              enum: ["create", "get", "find", "list", "update"],
-              description: "Действие: create - создать персонажа, get - получить персонажа по ID, find - найти персонажа по имени, list - список персонажей, update - обновить персонажа"
-            },
-            name: {
-              type: "string",
-              description: "Имя персонажа (для создания)"
-            },
-            race: {
-              type: "string",
-              enum: ["human", "elf", "dwarf", "halfling"],
-              description: "Раса персонажа"
-            },
-            class: {
-              type: "string", 
-              enum: ["fighter", "wizard", "rogue", "cleric"],
-              description: "Класс персонажа"
-            },
-            abilities: {
-              type: "object",
-              properties: {
-                strength: { type: "number", minimum: 3, maximum: 18 },
-                dexterity: { type: "number", minimum: 3, maximum: 18 },
-                constitution: { type: "number", minimum: 3, maximum: 18 },
-                intelligence: { type: "number", minimum: 3, maximum: 18 },
-                wisdom: { type: "number", minimum: 3, maximum: 18 },
-                charisma: { type: "number", minimum: 3, maximum: 18 }
-              },
-              description: "Характеристики персонажа (от 3 до 18)"
-            },
-            character_id: {
-              type: "string",
-              description: "ID персонажа (для получения или обновления)"
-            },
-            room_id: {
-              type: "string",
-              description: "ID комнаты"
-            },
-            player_name: {
-              type: "string",
-              description: "Имя игрока"
-            },
-            updates: {
-              type: "object",
-              description: "Объект с обновлениями персонажа"
-            }
+      name: "character_sheet",
+      description: "Создание и управление персонажами D&D 5e. Поддерживает создание, получение и обновление персонажей. Используй 'find' для поиска персонажа по имени, затем 'get' с полученным ID для детальной информации.",
+      input_schema: {
+        type: "object",
+        properties: {
+          action: {
+            type: "string",
+            enum: ["create", "get", "find", "list", "update"],
+            description: "Действие: create - создать персонажа, get - получить персонажа по ID, find - найти персонажа по имени, list - список персонажей, update - обновить персонажа"
           },
-          required: ["action", "room_id"]
-        }
+          name: {
+            type: "string",
+            description: "Имя персонажа (для создания)"
+          },
+          race: {
+            type: "string",
+            enum: ["human", "elf", "dwarf", "halfling"],
+            description: "Раса персонажа"
+          },
+          class: {
+            type: "string", 
+            enum: ["fighter", "wizard", "rogue", "cleric"],
+            description: "Класс персонажа"
+          },
+          abilities: {
+            type: "object",
+            properties: {
+              strength: { type: "number", minimum: 3, maximum: 18 },
+              dexterity: { type: "number", minimum: 3, maximum: 18 },
+              constitution: { type: "number", minimum: 3, maximum: 18 },
+              intelligence: { type: "number", minimum: 3, maximum: 18 },
+              wisdom: { type: "number", minimum: 3, maximum: 18 },
+              charisma: { type: "number", minimum: 3, maximum: 18 }
+            },
+            description: "Характеристики персонажа (от 3 до 18)"
+          },
+          character_id: {
+            type: "string",
+            description: "ID персонажа (для получения или обновления)"
+          },
+          room_id: {
+            type: "string",
+            description: "ID комнаты"
+          },
+          player_name: {
+            type: "string",
+            description: "Имя игрока"
+          },
+          updates: {
+            type: "object",
+            description: "Объект с обновлениями персонажа"
+          }
+        },
+        required: ["action", "room_id"]
       }
     };
   }

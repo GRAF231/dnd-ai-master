@@ -5,11 +5,10 @@ export interface AppConfig {
   nodeEnv: string;
   logLevel: string;
 
-  // OpenRouter API
-  openrouterApiKey: string;
-  openrouterBaseUrl: string;
-  siteUrl?: string;
-  siteName?: string;
+  // Eliza API
+  elizaApiKey: string;
+  elizaBaseUrl: string;
+  elizaModel: string;
 
   // API settings
   apiTimeout: number;
@@ -25,10 +24,10 @@ export interface AppConfig {
 }
 
 export function loadConfig(): AppConfig {
-  // Проверяем обязательные переменные
-  const openrouterApiKey = process.env.OPENROUTER_API_KEY;
-  if (!openrouterApiKey) {
-    throw new Error('OPENROUTER_API_KEY environment variable is required');
+  // Проверяем обязательные переменные для Eliza
+  const elizaApiKey = process.env.ELIZA_API_KEY || process.env.ANTHROPIC_API_KEY;
+  if (!elizaApiKey) {
+    throw new Error('ELIZA_API_KEY or ANTHROPIC_API_KEY environment variable is required');
   }
 
   return {
@@ -38,11 +37,10 @@ export function loadConfig(): AppConfig {
     nodeEnv: process.env.NODE_ENV || 'development',
     logLevel: process.env.LOG_LEVEL || 'info',
 
-    // OpenRouter API
-    openrouterApiKey,
-    openrouterBaseUrl: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
-    siteUrl: process.env.SITE_URL,
-    siteName: process.env.SITE_NAME,
+    // Eliza API
+    elizaApiKey,
+    elizaBaseUrl: process.env.ELIZA_BASE_URL || 'https://api.eliza.yandex.net/raw',
+    elizaModel: process.env.ELIZA_MODEL || 'claude-3-5-sonnet-20241022',
 
     // API settings
     apiTimeout: parseInt(process.env.API_TIMEOUT || '30000'),
@@ -50,8 +48,8 @@ export function loadConfig(): AppConfig {
     maxRetries: parseInt(process.env.MAX_RETRIES || '3'),
 
     // Model settings
-    dmModel: process.env.DM_MODEL || 'anthropic/claude-3.5-sonnet',
-    assistantModel: process.env.ASSISTANT_MODEL || 'anthropic/claude-3.5-sonnet',
+    dmModel: process.env.DM_MODEL || 'claude-3-5-sonnet-20241022',
+    assistantModel: process.env.ASSISTANT_MODEL || 'claude-3-5-sonnet-20241022',
 
     // Database
     databasePath: process.env.DATABASE_PATH || './database/dnd.db',
@@ -60,9 +58,9 @@ export function loadConfig(): AppConfig {
 
 export function validateConfig(config: AppConfig): void {
   const requiredFields = [
-    'openrouterApiKey',
-    'openrouterBaseUrl',
-    'dmModel'
+    'elizaApiKey',
+    'elizaBaseUrl',
+    'elizaModel'
   ];
 
   for (const field of requiredFields) {

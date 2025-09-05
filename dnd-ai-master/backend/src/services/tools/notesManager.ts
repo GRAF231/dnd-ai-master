@@ -206,11 +206,10 @@ export class NotesManagerService implements BaseTool {
 
   getToolDefinition(): ToolDefinition {
     return {
-      type: "function",
-      function: {
+
         name: "notes_manager",
         description: "Управление игровыми заметками. Позволяет сохранять, искать, категоризировать и управлять заметками",
-        parameters: {
+        input_schema: {
           type: "object",
           properties: {
             action: {
@@ -263,8 +262,7 @@ export class NotesManagerService implements BaseTool {
           },
           required: ["action", "room_id"]
         }
-      }
-    };
+      };
   }
 
   handleToolCall(args: any): string {

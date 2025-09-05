@@ -1,6 +1,5 @@
-import { OpenRouterService, ChatRequest } from './openrouter.js';
+import { ElizaService, ElizaChatRequest } from './eliza.js';
 import { toolsService, ToolCallRequest } from '../tools/index.js';
-import OpenAI from 'openai';
 
 export interface DMResponse {
   content: string;
@@ -29,12 +28,12 @@ export interface DMRequest {
   enableTools?: boolean;
 }
 
-export class DMAgentService {
-  private openRouter: OpenRouterService;
+export class DMAgentElizaService {
+  private eliza: ElizaService;
   private systemPrompt: string;
 
-  constructor(openRouter: OpenRouterService) {
-    this.openRouter = openRouter;
+  constructor(eliza: ElizaService) {
+    this.eliza = eliza;
     this.systemPrompt = this.createSystemPrompt();
   }
 
@@ -49,8 +48,8 @@ export class DMAgentService {
 Пиши от второго лица ("Вы видите..."). Не раскрывай закулисную информацию. Поддерживай напряжение и давай игрокам инициативу.`;
   }
 
-  private buildMessages(request: DMRequest): OpenAI.Chat.Completions.ChatCompletionMessageParam[] {
-    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+  private buildMessages(request: DMRequest): any[] {
+    const messages: any[] = [
       { role: 'system', content: this.systemPrompt }
     ];
     
@@ -81,8 +80,8 @@ export class DMAgentService {
       const messages = this.buildMessages(request);
       const tools = request.enableTools ? toolsService.getAllTools() : undefined;
       
-      const aiRequest: ChatRequest = {
-        model: process.env.DM_MODEL || 'anthropic/claude-3.5-sonnet',
+      const elizaRequest: ElizaChatRequest = {
+        model: process.env.ELIZA_MODEL || 'claude-3-5-sonnet-20241022',
         messages,
         max_tokens: 1000,
         temperature: 0.8,
@@ -90,11 +89,11 @@ export class DMAgentService {
         tool_choice: tools ? 'auto' : undefined,
       };
 
-      const response = await this.openRouter.createChatCompletion(aiRequest);
+      const response = await this.eliza.createChatCompletion(elizaRequest);
       const message = response.choices[0]?.message;
       
       if (!message) {
-        throw new Error('No response message from LLM');
+        throw new Error('No response message from Eliza');
       }
 
       // Обработка tool calls если есть
@@ -102,7 +101,7 @@ export class DMAgentService {
       let finalContent = message.content || '';
 
       if (message.tool_calls && message.tool_calls.length > 0) {
-                 // Выполняем tool calls
+         // Выполняем tool calls
          for (const toolCall of message.tool_calls) {
            try {
              // Безопасная проверка типа tool call
@@ -122,13 +121,50 @@ export class DMAgentService {
                  success: toolResult.success
                });
 
-               // Добавляем результат tool call в сообщения
-               messages.push(message);
-               messages.push({
-                 role: 'tool',
-                 tool_call_id: toolCall.id,
-                 content: toolResult.content
-               });
+               // Добавляем assistant message с tool_use (только один раз)
+               if (toolCalls.length === 1) {
+                 // Преобразуем OpenAI tool calls в Anthropic format
+                 const anthropicContent = [];
+                 if (message.content) {
+                   anthropicContent.push({
+                     type: 'text',
+                     text: message.content
+                   });
+                 }
+                 // Добавляем tool_use блоки
+                 for (const tc of message.tool_calls) {
+                   if (tc.type === 'function' && 'function' in tc) {
+                     anthropicContent.push({
+                       type: 'tool_use',
+                       id: tc.id,
+                       name: tc.function.name,
+                       input: JSON.parse(tc.function.arguments)
+                     });
+                   }
+                 }
+                 
+                 messages.push({
+                   role: 'assistant',
+                   content: anthropicContent
+                 });
+               }
+
+               // Добавляем tool result в user message
+               if (!messages.find(m => m.role === 'user' && Array.isArray(m.content))) {
+                 messages.push({
+                   role: 'user',
+                   content: []
+                 });
+               }
+               
+               const lastUserMessage = messages[messages.length - 1];
+               if (Array.isArray(lastUserMessage.content)) {
+                 lastUserMessage.content.push({
+                   type: 'tool_result',
+                   tool_use_id: toolCall.id,
+                   content: toolResult.content
+                 });
+               }
              }
             } catch (error) {
               console.error('Tool call execution error:', error);
@@ -146,15 +182,15 @@ export class DMAgentService {
          }
 
         // Запрашиваем финальный ответ с результатами tool calls
-        const finalRequest: ChatRequest = {
-          model: process.env.DM_MODEL || 'anthropic/claude-3.5-sonnet',
+        const finalRequest: ElizaChatRequest = {
+          model: process.env.ELIZA_MODEL || 'claude-3-5-sonnet-20241022',
           messages,
           max_tokens: 1000,
           temperature: 0.8,
           tools,
         };
 
-        const finalResponse = await this.openRouter.createChatCompletion(finalRequest);
+        const finalResponse = await this.eliza.createChatCompletion(finalRequest);
         finalContent = finalResponse.choices[0]?.message?.content || finalContent;
       }
 
@@ -165,7 +201,7 @@ export class DMAgentService {
         toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
       };
     } catch (error) {
-      console.error('DM Agent Error:', error);
+      console.error('DM Agent Eliza Error:', error);
       throw new Error('Failed to process DM response');
     }
   }
@@ -175,8 +211,8 @@ export class DMAgentService {
       const messages = this.buildMessages(request);
       const tools = request.enableTools ? toolsService.getAllTools() : undefined;
       
-      const aiRequest: ChatRequest = {
-        model: process.env.DM_MODEL || 'anthropic/claude-3.5-sonnet',
+      const elizaRequest: ElizaChatRequest = {
+        model: process.env.ELIZA_MODEL || 'claude-3-5-sonnet-20241022',
         messages,
         max_tokens: 1000,
         temperature: 0.8,
@@ -184,10 +220,10 @@ export class DMAgentService {
         tools,
         tool_choice: tools ? 'auto' : undefined,
       };
-      const stream = await this.openRouter.createStreamingChatCompletion(aiRequest);
+      const stream = await this.eliza.createStreamingChatCompletion(elizaRequest);
       return this.processStream(stream);
     } catch (error) {
-      console.error('DM Agent Streaming Error:', error);
+      console.error('DM Agent Eliza Streaming Error:', error);
       throw new Error('Failed to process DM streaming response');
     }
   }
@@ -226,7 +262,7 @@ export class DMAgentService {
    * Тестирует Tool Calling функциональность
    */
   async testToolCalling(): Promise<void> {
-    console.log('🎲 Тестирование Tool Calling...');
+    console.log('🎲 Тестирование Eliza Tool Calling...');
     
     const testMessages = [
       'Бросай за меня d20 на проверку Восприятия',

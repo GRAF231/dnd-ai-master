@@ -1,8 +1,9 @@
 import { FastifyInstance } from 'fastify';
-import { createDMAgent, type DMRequest } from '../services/llm/index.js';
+import { getDMAgent } from '../services/llm/index.js';
+import { type DMRequest } from '../services/llm/dmAgentEliza.js';
 
 export async function dmRoutes(fastify: FastifyInstance) {
-  const dmAgent = createDMAgent();
+  const dmAgent = getDMAgent();
 
   fastify.get('/dm/health', async (request, reply) => {
     try {
@@ -126,6 +127,25 @@ export async function dmRoutes(fastify: FastifyInstance) {
       fastify.log.error(`Tools info error: ${error instanceof Error ? error.message : String(error)}`);
       reply.code(500);
       return { error: 'Failed to get tools info' };
+    }
+  });
+
+  // Роут для проверки статуса Eliza
+  fastify.get('/dm/status', async (request, reply) => {
+    try {
+      const currentAgent = getDMAgent();
+      const isHealthy = await currentAgent.testConnection();
+      
+      return { 
+        provider: 'eliza',
+        healthy: isHealthy,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      reply.status(500).send({ 
+        error: 'Failed to check Eliza status',
+        healthy: false
+      });
     }
   });
 }

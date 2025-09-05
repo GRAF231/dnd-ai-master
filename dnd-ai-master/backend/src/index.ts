@@ -125,8 +125,8 @@ const start = async () => {
     await fastify.listen({ port: config.port, host: config.host });
     fastify.log.info(`🚀 Server running on http://localhost:${config.port}`);
     fastify.log.info(`Environment: ${config.nodeEnv}`);
-    fastify.log.info(`OpenRouter Base URL: ${config.openrouterBaseUrl}`);
-    fastify.log.info(`DM Model: ${config.dmModel}`);
+    fastify.log.info(`Eliza Base URL: ${config.elizaBaseUrl}`);
+    fastify.log.info(`Eliza Model: ${config.elizaModel}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

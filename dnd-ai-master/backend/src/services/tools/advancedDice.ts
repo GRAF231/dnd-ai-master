@@ -302,40 +302,37 @@ export class AdvancedDiceService implements BaseTool {
 
   getToolDefinition(): ToolDefinition {
     return {
-      type: "function",
-      function: {
-        name: "advanced_dice",
-        description: "Продвинутые броски кубиков с преимуществом, недостатком, взрывающимися кубиками и множественными бросками",
-        parameters: {
-          type: "object",
-          properties: {
-            type: {
-              type: "string",
-              enum: ["advantage", "disadvantage", "multiple", "exploding"],
-              description: "Тип броска: advantage - с преимуществом, disadvantage - с недостатком, multiple - множественные броски, exploding - взрывающиеся кубики"
-            },
-            dice: {
-              type: "string",
-              description: "Формула броска кубиков в формате XdY+Z",
-              pattern: "^\\d+d\\d+(\\+\\d+|\\-\\d+)?$"
-            },
-            count: {
-              type: "number",
-              minimum: 1,
-              maximum: 20,
-              description: "Количество бросков (только для type=multiple)"
-            },
-            description: {
-              type: "string",
-              description: "Описание броска"
-            },
-            player_name: {
-              type: "string",
-              description: "Имя игрока"
-            }
+      name: "advanced_dice",
+      description: "Продвинутые броски кубиков с преимуществом, недостатком, взрывающимися кубиками и множественными бросками",
+      input_schema: {
+        type: "object",
+        properties: {
+          type: {
+            type: "string",
+            enum: ["advantage", "disadvantage", "multiple", "exploding"],
+            description: "Тип броска: advantage - с преимуществом, disadvantage - с недостатком, multiple - множественные броски, exploding - взрывающиеся кубики"
           },
-          required: ["type", "dice"]
-        }
+          dice: {
+            type: "string",
+            description: "Формула броска кубиков в формате XdY+Z",
+            pattern: "^\\d+d\\d+(\\+\\d+|\\-\\d+)?$"
+          },
+          count: {
+            type: "number",
+            minimum: 1,
+            maximum: 20,
+            description: "Количество бросков (только для type=multiple)"
+          },
+          description: {
+            type: "string",
+            description: "Описание броска"
+          },
+          player_name: {
+            type: "string",
+            description: "Имя игрока"
+          }
+        },
+        required: ["type", "dice"]
       }
     };
   }

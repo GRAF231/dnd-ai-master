@@ -279,76 +279,73 @@ export class InitiativeTrackerService implements BaseTool {
 
   getToolDefinition(): ToolDefinition {
     return {
-      type: "function",
-      function: {
-        name: "initiative_tracker",
-        description: "Управление боевой инициативой и участниками боя",
-        parameters: {
-          type: "object",
-          properties: {
-            action: {
-              type: "string",
-              enum: ["start_combat", "end_combat", "add_combatant", "remove_combatant", "next_turn", "update_hp", "update_condition", "get_status"],
-              description: "Действие с трекером инициативы"
-            },
-            room_id: {
-              type: "string",
-              description: "ID комнаты"
-            },
-            name: {
-              type: "string",
-              description: "Имя участника боя (для добавления)"
-            },
-            initiative: {
-              type: "number",
-              minimum: 1,
-              maximum: 30,
-              description: "Значение инициативы"
-            },
-            hp_current: {
-              type: "number",
-              minimum: 0,
-              description: "Текущие хиты"
-            },
-            hp_max: {
-              type: "number",
-              minimum: 1,
-              description: "Максимальные хиты"
-            },
-            ac: {
-              type: "number",
-              minimum: 1,
-              maximum: 30,
-              description: "Класс брони"
-            },
-            type: {
-              type: "string",
-              enum: ["player", "npc", "monster"],
-              description: "Тип участника"
-            },
-            player_name: {
-              type: "string",
-              description: "Имя игрока (для персонажей игроков)"
-            },
-            combatant_id: {
-              type: "string",
-              description: "ID участника боя"
-            },
-            condition: {
-              type: "string",
-              description: "Название состояния"
-            },
-            add: {
-              type: "boolean",
-              description: "true - добавить состояние, false - убрать"
-            },
-            notes: {
-              type: "string",
-              description: "Заметки об участнике"
-            }
+      name: "initiative_tracker",
+      description: "Управление боевой инициативой и участниками боя",
+      input_schema: {
+        type: "object",
+        properties: {
+          action: {
+            type: "string",
+            enum: ["start_combat", "end_combat", "add_combatant", "remove_combatant", "next_turn", "update_hp", "update_condition", "get_status"],
+            description: "Действие с трекером инициативы"
           },
-          required: ["action", "room_id"]
-        }
+          room_id: {
+            type: "string",
+            description: "ID комнаты"
+          },
+          name: {
+            type: "string",
+            description: "Имя участника боя (для добавления)"
+          },
+          initiative: {
+            type: "number",
+            minimum: 1,
+            maximum: 30,
+            description: "Значение инициативы"
+          },
+          hp_current: {
+            type: "number",
+            minimum: 0,
+            description: "Текущие хиты"
+          },
+          hp_max: {
+            type: "number",
+            minimum: 1,
+            description: "Максимальные хиты"
+          },
+          ac: {
+            type: "number",
+            minimum: 1,
+            maximum: 30,
+            description: "Класс брони"
+          },
+          type: {
+            type: "string",
+            enum: ["player", "npc", "monster"],
+            description: "Тип участника"
+          },
+          player_name: {
+            type: "string",
+            description: "Имя игрока (для персонажей игроков)"
+          },
+          combatant_id: {
+            type: "string",
+            description: "ID участника боя"
+          },
+          condition: {
+            type: "string",
+            description: "Название состояния"
+          },
+          add: {
+            type: "boolean",
+            description: "true - добавить состояние, false - убрать"
+          },
+          notes: {
+            type: "string",
+            description: "Заметки об участнике"
+          }
+        },
+        required: ["action", "room_id"]
       }
     };
   }

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "c01b1bd2-7df1-43c8-a3ed-b9e5644777d7",
+    "name": "Торвальд",
+    "race": "human",
+    "class": "fighter",
+    "level": 1,
+    "background": "Folk Hero",
+    "abilities": {
+      "strength": 17,
+      "dexterity": 15,
+      "constitution": 16,
+      "intelligence": 11,
+      "wisdom": 13,
+      "charisma": 14
+    },
+    "hitPoints": {
+      "current": 13,
+      "maximum": 13,
+      "temporary": 0
+    },
+    "armorClass": 12,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 5,
+      "acrobatics": 2,
+      "sleight_of_hand": 2,
+      "stealth": 2,
+      "arcana": 0,
+      "history": 0,
+      "investigation": 0,
+      "nature": 0,
+      "religion": 0,
+      "animal_handling": 1,
+      "insight": 1,
+      "medicine": 1,
+      "perception": 1,
+      "survival": 1,
+      "deception": 1,
+      "intimidation": 3,
+      "performance": 1,
+      "persuasion": 1
+    },
+    "savingThrows": {
+      "strength": 5,
+      "dexterity": 2,
+      "constitution": 4,
+      "intelligence": 0,
+      "wisdom": 1,
+      "charisma": 1
+    },
+    "roomId": "3ks1jgh4nir",
+    "playerName": "орха",
+    "created": "2025-09-05T09:48:02.565Z",
+    "lastUpdated": "2025-09-05T09:48:02.565Z"
+  }
+]

@@ -339,11 +339,10 @@ export class RulesReferenceService implements BaseTool {
 
   getToolDefinition(): ToolDefinition {
     return {
-      type: "function",
-      function: {
+
         name: "rules_reference",
         description: "Справочная информация по правилам D&D 5e: заклинания, состояния, действия в бою",
-        parameters: {
+        input_schema: {
           type: "object",
           properties: {
             type: {
@@ -372,8 +371,7 @@ export class RulesReferenceService implements BaseTool {
           },
           required: ["type"]
         }
-      }
-    };
+      };
   }
 
   handleToolCall(args: any): string {

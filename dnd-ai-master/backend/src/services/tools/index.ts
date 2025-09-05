@@ -35,7 +35,7 @@ export class ToolsService {
   }
 
   /**
-   * Возвращает все доступные инструменты для OpenRouter/OpenAI
+   * Возвращает все доступные инструменты для Anthropic Claude API
    */
   getAllTools(): ToolDefinition[] {
     return [

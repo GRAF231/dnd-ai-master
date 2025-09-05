@@ -1,23 +1,20 @@
 /**
  * Базовый интерфейс для всех инструментов D&D системы
- * Обеспечивает единый стандарт для создания и управления инструментами
+ * Использует формат Anthropic Claude API
  */
 export interface ToolDefinition {
-  type: "function";
-  function: {
-    name: string;
-    description: string;
-    parameters: {
-      type: "object";
-      properties: Record<string, any>;
-      required: string[];
-    };
+  name: string;
+  description: string;
+  input_schema: {
+    type: "object";
+    properties: Record<string, any>;
+    required: string[];
   };
 }
 
 export interface BaseTool {
   /**
-   * Возвращает определение инструмента для OpenRouter/OpenAI
+   * Возвращает определение инструмента для Anthropic Claude API
    */
   getToolDefinition(): ToolDefinition;
 

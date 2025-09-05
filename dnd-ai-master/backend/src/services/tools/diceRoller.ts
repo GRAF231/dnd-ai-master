@@ -16,29 +16,26 @@ export interface DiceRollResult {
 }
 
 export interface DiceRollToolDefinition {
-  type: "function";
-  function: {
-    name: "roll_dice";
-    description: "Бросает кубики для D&D. Поддерживает стандартную нотацию типа '1d20+5', '3d6-2', '2d8'";
-    parameters: {
-      type: "object";
-      properties: {
-        dice: {
-          type: "string";
-          description: "Формула броска кубиков в формате XdY+Z, где X - количество кубиков, Y - тип кубика, Z - модификатор";
-          pattern: "^\\d+d\\d+(\\+\\d+|\\-\\d+)?$";
-        };
-        description: {
-          type: "string";
-          description: "Описание броска (например: 'Атака мечом', 'Проверка Восприятия')";
-        };
-        player_name: {
-          type: "string";
-          description: "Имя игрока, совершающего бросок";
-        };
+  name: "roll_dice";
+  description: "Бросает кубики для D&D. Поддерживает стандартную нотацию типа '1d20+5', '3d6-2', '2d8'";
+  input_schema: {
+    type: "object";
+    properties: {
+      dice: {
+        type: "string";
+        description: "Формула броска кубиков в формате XdY+Z, где X - количество кубиков, Y - тип кубика, Z - модификатор";
+        pattern: "^\\d+d\\d+(\\+\\d+|\\-\\d+)?$";
       };
-      required: ["dice"];
+      description: {
+        type: "string";
+        description: "Описание броска (например: 'Атака мечом', 'Проверка Восприятия')";
+      };
+      player_name: {
+        type: "string";
+        description: "Имя игрока, совершающего бросок";
+      };
     };
+    required: ["dice"];
   };
 }
 
@@ -128,33 +125,30 @@ export class DiceRollerService {
   }
 
   /**
-   * Возвращает определение инструмента для OpenAI/OpenRouter
+   * Возвращает определение инструмента для Anthropic Claude API
    */
   getToolDefinition(): DiceRollToolDefinition {
     return {
-      type: "function",
-      function: {
-        name: "roll_dice",
-        description: "Бросает кубики для D&D. Поддерживает стандартную нотацию типа '1d20+5', '3d6-2', '2d8'",
-        parameters: {
-          type: "object",
-          properties: {
-            dice: {
-              type: "string",
-              description: "Формула броска кубиков в формате XdY+Z, где X - количество кубиков, Y - тип кубика, Z - модификатор",
-              pattern: "^\\d+d\\d+(\\+\\d+|\\-\\d+)?$"
-            },
-            description: {
-              type: "string",
-              description: "Описание броска (например: 'Атака мечом', 'Проверка Восприятия')"
-            },
-            player_name: {
-              type: "string", 
-              description: "Имя игрока, совершающего бросок"
-            }
+      name: "roll_dice",
+      description: "Бросает кубики для D&D. Поддерживает стандартную нотацию типа '1d20+5', '3d6-2', '2d8'",
+      input_schema: {
+        type: "object",
+        properties: {
+          dice: {
+            type: "string",
+            description: "Формула броска кубиков в формате XdY+Z, где X - количество кубиков, Y - тип кубика, Z - модификатор",
+            pattern: "^\\d+d\\d+(\\+\\d+|\\-\\d+)?$"
           },
-          required: ["dice"]
-        }
+          description: {
+            type: "string",
+            description: "Описание броска (например: 'Атака мечом', 'Проверка Восприятия')"
+          },
+          player_name: {
+            type: "string", 
+            description: "Имя игрока, совершающего бросок"
+          }
+        },
+        required: ["dice"]
       }
     };
   }
