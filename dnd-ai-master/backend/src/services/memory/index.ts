@@ -4,6 +4,8 @@
 export { MemoryManager } from './MemoryManager.js';
 export { DatabaseService } from './DatabaseService.js';
 export { EntityService } from './EntityService.js';
+export { ContextManager } from './ContextManager.js';
+export { SummaryService } from './SummaryService.js';
 
 import { MemoryManager } from './MemoryManager.js';
 
@@ -20,6 +22,11 @@ export type {
   // Контекст
   GameContext,
   ContextOptions,
+  OptimizedContext,
+  
+  // Конфигурации
+  ContextManagerConfig,
+  SummaryServiceConfig,
   
   // Запросы
   CreateRoomRequest,
@@ -27,10 +34,21 @@ export type {
   SaveMessageRequest,
   CreateEntityRequest,
   CreateFactRequest,
+  CreateSummaryRequest,
   
   // Результаты
   OperationResult,
-  MemoryStats
+  MemoryStats,
+  Summary,
+  CompressionStats,
+  
+  // Приоритизация
+  PrioritizedMessage,
+  PrioritizedEntity,
+  
+  // Сцены
+  AutoScene,
+  SceneAnalysis
 } from './types.js';
 
 // Создание глобального экземпляра MemoryManager

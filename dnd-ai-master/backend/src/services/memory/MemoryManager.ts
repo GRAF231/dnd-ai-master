@@ -1,10 +1,14 @@
 import { DatabaseService } from './DatabaseService.js';
 import { EntityService } from './EntityService.js';
+import { ContextManager } from './ContextManager.js';
+import { SummaryService } from './SummaryService.js';
 import { 
   Room, Session, Message, Entity, Fact, GameContext,
   CreateRoomRequest, CreateSessionRequest, SaveMessageRequest,
   CreateEntityRequest, CreateFactRequest, ContextOptions,
-  OperationResult, MemoryStats, EntityType
+  OperationResult, MemoryStats, EntityType,
+  OptimizedContext, ContextManagerConfig, SummaryServiceConfig,
+  CreateSummaryRequest, Summary, CompressionStats
 } from './types.js';
 
 /**
@@ -14,11 +18,19 @@ import {
 export class MemoryManager {
   private db: DatabaseService;
   private entityService: EntityService;
+  private contextManager: ContextManager;
+  private summaryService: SummaryService;
   private initialized: boolean = false;
 
-  constructor(dbPath?: string) {
+  constructor(
+    dbPath?: string,
+    contextConfig?: Partial<ContextManagerConfig>,
+    summaryConfig?: Partial<SummaryServiceConfig>
+  ) {
     this.db = new DatabaseService(dbPath);
     this.entityService = new EntityService(this.db);
+    this.contextManager = new ContextManager(this.db, this.entityService, contextConfig);
+    this.summaryService = new SummaryService(this.db, this.entityService, summaryConfig);
   }
 
   /**
@@ -479,6 +491,184 @@ export class MemoryManager {
         Math.round(dbStats.total_messages / Math.max(dbStats.total_sessions, 1)) : 0,
       storage_size_mb: 0 // TODO: Реализовать подсчет размера файла БД
     };
+  }
+
+  // === НОВЫЕ МЕТОДЫ ДЛЯ CONTEXTMANAGER ===
+
+  /**
+   * Построение оптимизированного контекста с приоритизацией
+   */
+  async buildOptimizedContext(
+    roomId: string,
+    options?: ContextOptions
+  ): Promise<OptimizedContext> {
+    this.ensureInitialized();
+    return this.contextManager.buildOptimizedContext(roomId, options);
+  }
+
+  /**
+   * Инвалидация кэша контекста для комнаты
+   */
+  invalidateContextCache(roomId: string): void {
+    this.contextManager.invalidateRoomCache(roomId);
+  }
+
+  /**
+   * Получение статистики кэша контекста
+   */
+  getContextCacheStats(): {
+    total_entries: number;
+    active_entries: number;
+    expired_entries: number;
+    memory_usage_mb: number;
+  } {
+    return this.contextManager.getCacheStats();
+  }
+
+  /**
+   * Очистка кэша контекста
+   */
+  clearContextCache(): void {
+    this.contextManager.clearCache();
+  }
+
+  // === НОВЫЕ МЕТОДЫ ДЛЯ SUMMARYSERVICE ===
+
+  /**
+   * Создание сводки сообщений
+   */
+  async createSummary(request: CreateSummaryRequest): Promise<OperationResult<Summary>> {
+    this.ensureInitialized();
+    return this.summaryService.createSummary(request);
+  }
+
+  /**
+   * Автоматическая проверка и создание сводки
+   */
+  async checkAutoSummary(sessionId: string): Promise<void> {
+    this.ensureInitialized();
+    await this.summaryService.checkAndCreateAutoSummary(sessionId);
+  }
+
+  /**
+   * Определение сцен в сессии
+   */
+  async detectScenes(sessionId: string) {
+    this.ensureInitialized();
+    return this.summaryService.detectScenes(sessionId);
+  }
+
+  /**
+   * Получение статистики сжатия
+   */
+  async getCompressionStats(sessionId: string): Promise<CompressionStats> {
+    this.ensureInitialized();
+    return this.summaryService.getCompressionStats(sessionId);
+  }
+
+  /**
+   * Получение статуса обработки сводок
+   */
+  getSummaryProcessingStatus(): {
+    active_sessions: string[];
+    queue_size: number;
+  } {
+    return this.summaryService.getProcessingStatus();
+  }
+
+  /**
+   * Очистка очереди обработки сводок
+   */
+  clearSummaryProcessingQueue(): void {
+    this.summaryService.clearProcessingQueue();
+  }
+
+  // === ОБНОВЛЕННЫЕ МЕТОДЫ С ИНТЕГРАЦИЕЙ ===
+
+  /**
+   * Обработка сообщения пользователя с автоматическими функциями
+   */
+  async processUserMessageWithOptimizations(roomId: string, content: string, playerName?: string): Promise<{
+    session: Session;
+    message: Message;
+    context: OptimizedContext;
+  }> {
+    this.ensureInitialized();
+    
+    // Обеспечиваем существование комнаты
+    await this.ensureRoom(roomId);
+    
+    // Получаем или создаем сессию
+    const session = await this.startSession(roomId);
+    
+    // Сохраняем сообщение пользователя
+    const messageResult = await this.saveUserMessage(session.id, content, playerName);
+    
+    if (!messageResult.success || !messageResult.data) {
+      throw new Error(`Не удалось сохранить сообщение: ${messageResult.error}`);
+    }
+
+    // Инвалидируем кэш контекста для комнаты
+    this.invalidateContextCache(roomId);
+
+    // Автоматически извлекаем сущности из сообщения пользователя
+    try {
+      const extractedEntities = await this.extractEntitiesFromText(roomId, content, messageResult.data.id);
+      if (extractedEntities.length > 0) {
+        console.log(`🔍 Автоматически извлечено ${extractedEntities.length} сущностей из сообщения пользователя`);
+      }
+    } catch (error) {
+      console.warn('Не удалось извлечь сущности из сообщения пользователя:', error);
+    }
+    
+    // Строим оптимизированный контекст
+    const context = await this.buildOptimizedContext(roomId);
+    
+    // Проверяем необходимость автоматического создания сводки
+    try {
+      await this.checkAutoSummary(session.id);
+    } catch (error) {
+      console.warn('Ошибка автоматического создания сводки:', error);
+    }
+    
+    return {
+      session,
+      message: messageResult.data,
+      context
+    };
+  }
+
+  /**
+   * Сохранение ответа ИИ-мастера с оптимизациями
+   */
+  async processAssistantResponseWithOptimizations(sessionId: string, content: string, tokenCount?: number): Promise<Message> {
+    this.ensureInitialized();
+    
+    const messageResult = await this.saveAssistantMessage(sessionId, content, tokenCount);
+    
+    if (!messageResult.success || !messageResult.data) {
+      throw new Error(`Не удалось сохранить ответ ИИ: ${messageResult.error}`);
+    }
+
+    // Получаем roomId для инвалидации кэша
+    const session = await this.db.getSessionById(sessionId);
+    if (session) {
+      this.invalidateContextCache(session.room_id);
+    }
+
+    // Автоматически извлекаем сущности из ответа ИИ-мастера
+    try {
+      if (session) {
+        const extractedEntities = await this.extractEntitiesFromText(session.room_id, content, messageResult.data.id);
+        if (extractedEntities.length > 0) {
+          console.log(`🔍 Автоматически извлечено ${extractedEntities.length} сущностей из ответа ИИ-мастера`);
+        }
+      }
+    } catch (error) {
+      console.warn('Не удалось извлечь сущности из ответа ИИ-мастера:', error);
+    }
+    
+    return messageResult.data;
   }
 
   /**
