@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { searchParams } = new URL(request.url);
     const token = searchParams.get('token');
     
@@ -17,7 +18,7 @@ export async function GET(
 
     // Проксируем запрос к бэкенду
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    const response = await fetch(`${backendUrl}/api/rooms/${params.id}?token=${token}`);
+    const response = await fetch(`${backendUrl}/api/rooms/${id}?token=${token}`);
 
     const data = await response.json();
     

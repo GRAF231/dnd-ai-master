@@ -6,8 +6,25 @@ interface EquipmentStepProps {
   onChange: (updates: Partial<CharacterData>) => void;
 }
 
+interface EquipmentOption {
+  name: string;
+  ac?: string;
+  description: string;
+}
+
+interface EquipmentChoice {
+  category: string;
+  options: EquipmentOption[];
+}
+
+interface EquipmentClass {
+  name: string;
+  choices: EquipmentChoice[];
+  baseEquipment: string[];
+}
+
 // Стартовое снаряжение по классам
-const STARTING_EQUIPMENT = {
+const STARTING_EQUIPMENT: Record<string, EquipmentClass> = {
   fighter: {
     name: 'Воин',
     choices: [

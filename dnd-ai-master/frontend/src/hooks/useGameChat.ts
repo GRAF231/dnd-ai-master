@@ -39,13 +39,6 @@ export const useGameChat = ({
     if (!content.trim() || isLoading || isStreaming) return;
 
     // Добавляем сообщение игрока
-    const playerMessage = addMessage({
-      type: 'player',
-      playerName,
-      content: content.trim(),
-      timestamp: new Date().toISOString(),
-    });
-
     const dmRequest: DMRequest = {
       playerMessage: content.trim(),
       playerName,
@@ -140,7 +133,7 @@ export const useGameChat = ({
         const response = await dmApi.sendMessage(dmRequest);
 
         if (response.success) {
-          const dmMessage = addMessage({
+          addMessage({
             type: 'dm',
             content: response.response.content,
             timestamp: response.response.timestamp,

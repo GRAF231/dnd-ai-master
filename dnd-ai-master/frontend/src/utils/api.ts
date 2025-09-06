@@ -73,7 +73,7 @@ export class DMApiClient {
                 return;
               }
             } catch (parseError) {
-              console.warn('Failed to parse SSE data:', line);
+              console.warn('Failed to parse SSE data:', line, parseError);
             }
           }
         }

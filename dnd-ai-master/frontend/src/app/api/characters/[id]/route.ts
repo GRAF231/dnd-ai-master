@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { searchParams } = new URL(request.url);
     const roomId = searchParams.get('roomId');
     
@@ -14,7 +15,7 @@ export async function GET(
 
     // Прямой вызов к backend API
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000';
-    const response = await fetch(`${backendUrl}/api/characters/${params.id}?roomId=${roomId}`, {
+    const response = await fetch(`${backendUrl}/api/characters/${id}?roomId=${roomId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -38,9 +39,10 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { roomId, updates } = body;
     
@@ -52,7 +54,7 @@ export async function PUT(
 
     // Прямой вызов к backend API
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000';
-    const response = await fetch(`${backendUrl}/api/characters/${params.id}`, {
+    const response = await fetch(`${backendUrl}/api/characters/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -84,7 +84,6 @@ const STANDARD_ARRAY = [15, 14, 13, 12, 10, 8];
 
 export default function AbilitiesStep({ data, onChange }: AbilitiesStepProps) {
   const [method, setMethod] = useState<string>('point_buy');
-  const [assignedArray, setAssignedArray] = useState<number[]>([]);
 
   // Вычисляем модификатор характеристики
   const getModifier = (score: number): number => {
@@ -109,17 +108,6 @@ export default function AbilitiesStep({ data, onChange }: AbilitiesStepProps) {
   const updateAbility = (ability: keyof CharacterData['abilities'], value: number) => {
     const newAbilities = { ...data.abilities, [ability]: value };
     onChange({ abilities: newAbilities });
-  };
-
-  // Применяем стандартный набор
-  const applyStandardArray = () => {
-    if (assignedArray.length === 6) {
-      const newAbilities = { ...data.abilities };
-      ABILITIES.forEach((ability, index) => {
-        newAbilities[ability.key] = assignedArray[index];
-      });
-      onChange({ abilities: newAbilities });
-    }
   };
 
   // Быстрая установка значений

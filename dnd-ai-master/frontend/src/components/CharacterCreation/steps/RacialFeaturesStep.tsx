@@ -48,7 +48,7 @@ const RACIAL_FEATURES = {
   }
 };
 
-export default function RacialFeaturesStep({ data, onChange }: RacialFeaturesStepProps) {
+export default function RacialFeaturesStep({ data }: RacialFeaturesStepProps) {
   const raceData = RACIAL_FEATURES[data.race as keyof typeof RACIAL_FEATURES];
 
   if (!raceData) {

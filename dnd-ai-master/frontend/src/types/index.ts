@@ -1,3 +1,6 @@
+
+import { Character } from '@/utils/charactersApi';
+
 // Типы для работы с DM API
 export interface DMRequest {
   playerMessage: string;
@@ -12,9 +15,25 @@ export interface DMRequest {
   enableTools?: boolean;
 }
 
+// Типы для tool definitions (соответствуют бэкенду)
+export interface ToolDefinition {
+  name: string;
+  description: string;
+  input_schema: {
+    type: "object";
+    properties: Record<string, unknown>;
+    required: string[];
+  };
+}
+
+// Аргументы tool call могут быть разными в зависимости от инструмента
+export interface ToolCallArguments {
+  [key: string]: string | number | boolean | undefined;
+}
+
 export interface ToolCallResult {
   name: string;
-  arguments: any;
+  arguments: ToolCallArguments;
   result: string;
   success: boolean;
 }
@@ -56,11 +75,7 @@ export interface Player {
   id: string;
   name: string;
   isConnected: boolean;
-  character?: {
-    name: string;
-    class: string;
-    level: number;
-  };
+  character?: Character;
 }
 
 // Типы для инструментов
@@ -73,5 +88,5 @@ export interface ToolInfo {
 export interface ToolsResponse {
   success: boolean;
   tools: Record<string, ToolInfo>;
-  definitions: any[];
+  definitions: ToolDefinition[];
 }
