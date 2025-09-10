@@ -1,0 +1,170 @@
+[
+  {
+    "id": "e09c7585-2fba-4016-8373-feb469a8c7e0",
+    "name": "фыв",
+    "race": "elf",
+    "class": "rogue",
+    "level": 1,
+    "background": "Народный герой",
+    "abilities": {
+      "strength": 15,
+      "dexterity": 17,
+      "constitution": 15,
+      "intelligence": 8,
+      "wisdom": 8,
+      "charisma": 8
+    },
+    "hitPoints": {
+      "current": 10,
+      "maximum": 10,
+      "temporary": 0
+    },
+    "armorClass": 13,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 2,
+      "acrobatics": 2,
+      "sleight_of_hand": 4,
+      "stealth": 4,
+      "arcana": -1,
+      "history": -1,
+      "investigation": -1,
+      "nature": -1,
+      "religion": -1,
+      "animal_handling": -1,
+      "insight": -1,
+      "medicine": -1,
+      "perception": 1,
+      "survival": -1,
+      "deception": 1,
+      "intimidation": -1,
+      "performance": -1,
+      "persuasion": -1
+    },
+    "savingThrows": {
+      "strength": 2,
+      "dexterity": 4,
+      "constitution": 2,
+      "intelligence": 1,
+      "wisdom": -1,
+      "charisma": -1
+    },
+    "roomId": "test",
+    "playerName": "TestPlayer",
+    "created": "2025-09-03T22:34:43.432Z",
+    "lastUpdated": "2025-09-03T22:34:43.435Z"
+  },
+  {
+    "id": "ac13d401-5223-4241-8c76-f5acf06bbf60",
+    "name": "фывфыв",
+    "race": "human",
+    "class": "rogue",
+    "level": 1,
+    "background": "Folk Hero",
+    "abilities": {
+      "strength": 16,
+      "dexterity": 16,
+      "constitution": 16,
+      "intelligence": 9,
+      "wisdom": 9,
+      "charisma": 9
+    },
+    "hitPoints": {
+      "current": 11,
+      "maximum": 11,
+      "temporary": 0
+    },
+    "armorClass": 13,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 2,
+      "acrobatics": 2,
+      "sleight_of_hand": 4,
+      "stealth": 4,
+      "arcana": -1,
+      "history": -1,
+      "investigation": -1,
+      "nature": -1,
+      "religion": -1,
+      "animal_handling": -1,
+      "insight": -1,
+      "medicine": -1,
+      "perception": 1,
+      "survival": -1,
+      "deception": 1,
+      "intimidation": -1,
+      "performance": -1,
+      "persuasion": -1
+    },
+    "savingThrows": {
+      "strength": 2,
+      "dexterity": 4,
+      "constitution": 2,
+      "intelligence": 1,
+      "wisdom": -1,
+      "charisma": -1
+    },
+    "roomId": "test",
+    "playerName": "TestPlayer",
+    "created": "2025-09-03T22:36:53.299Z",
+    "lastUpdated": "2025-09-03T22:36:53.299Z"
+  },
+  {
+    "id": "63516160-5269-48c9-8278-0240b38703f7",
+    "name": "фвыафв",
+    "race": "halfling",
+    "class": "rogue",
+    "level": 1,
+    "background": "Folk Hero",
+    "abilities": {
+      "strength": 15,
+      "dexterity": 17,
+      "constitution": 15,
+      "intelligence": 8,
+      "wisdom": 8,
+      "charisma": 8
+    },
+    "hitPoints": {
+      "current": 10,
+      "maximum": 10,
+      "temporary": 0
+    },
+    "armorClass": 13,
+    "speed": 25,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 2,
+      "acrobatics": 2,
+      "sleight_of_hand": 4,
+      "stealth": 4,
+      "arcana": -1,
+      "history": -1,
+      "investigation": -1,
+      "nature": -1,
+      "religion": -1,
+      "animal_handling": -1,
+      "insight": -1,
+      "medicine": -1,
+      "perception": 1,
+      "survival": -1,
+      "deception": 1,
+      "intimidation": -1,
+      "performance": -1,
+      "persuasion": -1
+    },
+    "savingThrows": {
+      "strength": 2,
+      "dexterity": 4,
+      "constitution": 2,
+      "intelligence": 1,
+      "wisdom": -1,
+      "charisma": -1
+    },
+    "roomId": "test",
+    "playerName": "TestPlayer",
+    "created": "2025-09-03T22:37:23.239Z",
+    "lastUpdated": "2025-09-03T22:37:23.239Z"
+  }
+]

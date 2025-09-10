@@ -1,0 +1,170 @@
+[
+  {
+    "id": "9b207f78-c848-4f39-8393-0b5c9131330a",
+    "name": "ро",
+    "race": "human",
+    "class": "rogue",
+    "level": 1,
+    "background": "Folk Hero",
+    "abilities": {
+      "strength": 16,
+      "dexterity": 16,
+      "constitution": 16,
+      "intelligence": 9,
+      "wisdom": 9,
+      "charisma": 9
+    },
+    "hitPoints": {
+      "current": 11,
+      "maximum": 11,
+      "temporary": 0
+    },
+    "armorClass": 13,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 2,
+      "acrobatics": 2,
+      "sleight_of_hand": 4,
+      "stealth": 4,
+      "arcana": -1,
+      "history": -1,
+      "investigation": -1,
+      "nature": -1,
+      "religion": -1,
+      "animal_handling": -1,
+      "insight": -1,
+      "medicine": -1,
+      "perception": 1,
+      "survival": -1,
+      "deception": 1,
+      "intimidation": -1,
+      "performance": -1,
+      "persuasion": -1
+    },
+    "savingThrows": {
+      "strength": 2,
+      "dexterity": 4,
+      "constitution": 2,
+      "intelligence": 1,
+      "wisdom": -1,
+      "charisma": -1
+    },
+    "roomId": "voycu901gf9",
+    "playerName": "ор",
+    "created": "2025-09-03T22:48:33.167Z",
+    "lastUpdated": "2025-09-03T22:48:33.167Z"
+  },
+  {
+    "id": "f99220b6-402d-4006-bd66-03e29af77c10",
+    "name": "GRAF",
+    "race": "elf",
+    "class": "fighter",
+    "level": 1,
+    "background": "Преступник",
+    "abilities": {
+      "strength": 15,
+      "dexterity": 17,
+      "constitution": 15,
+      "intelligence": 8,
+      "wisdom": 8,
+      "charisma": 8
+    },
+    "hitPoints": {
+      "current": 12,
+      "maximum": 12,
+      "temporary": 0
+    },
+    "armorClass": 13,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 4,
+      "acrobatics": 2,
+      "sleight_of_hand": 2,
+      "stealth": 2,
+      "arcana": -1,
+      "history": -1,
+      "investigation": -1,
+      "nature": -1,
+      "religion": -1,
+      "animal_handling": -1,
+      "insight": -1,
+      "medicine": -1,
+      "perception": -1,
+      "survival": -1,
+      "deception": -1,
+      "intimidation": 1,
+      "performance": -1,
+      "persuasion": -1
+    },
+    "savingThrows": {
+      "strength": 4,
+      "dexterity": 2,
+      "constitution": 4,
+      "intelligence": -1,
+      "wisdom": -1,
+      "charisma": -1
+    },
+    "roomId": "voycu901gf9",
+    "playerName": "орхан",
+    "created": "2025-09-03T22:56:14.206Z",
+    "lastUpdated": "2025-09-03T22:56:14.206Z"
+  },
+  {
+    "id": "c3170716-64ce-4869-8106-af9e3ca62921",
+    "name": "GRAF",
+    "race": "elf",
+    "class": "fighter",
+    "level": 1,
+    "background": "Folk Hero",
+    "abilities": {
+      "strength": 16,
+      "dexterity": 16,
+      "constitution": 14,
+      "intelligence": 10,
+      "wisdom": 12,
+      "charisma": 10
+    },
+    "hitPoints": {
+      "current": 12,
+      "maximum": 12,
+      "temporary": 0
+    },
+    "armorClass": 13,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 5,
+      "acrobatics": 2,
+      "sleight_of_hand": 2,
+      "stealth": 2,
+      "arcana": 0,
+      "history": 0,
+      "investigation": 0,
+      "nature": 0,
+      "religion": 0,
+      "animal_handling": 1,
+      "insight": 1,
+      "medicine": 1,
+      "perception": 1,
+      "survival": 1,
+      "deception": 0,
+      "intimidation": 2,
+      "performance": 0,
+      "persuasion": 0
+    },
+    "savingThrows": {
+      "strength": 5,
+      "dexterity": 2,
+      "constitution": 4,
+      "intelligence": 0,
+      "wisdom": 1,
+      "charisma": 0
+    },
+    "roomId": "voycu901gf9",
+    "playerName": "орхан",
+    "created": "2025-09-03T23:20:50.899Z",
+    "lastUpdated": "2025-09-03T23:20:50.899Z"
+  }
+]

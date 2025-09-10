@@ -1,0 +1,1 @@
+export { GameChat } from './GameChat';

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "882a07f0-19f9-4c9e-8ac6-6acd285c2423",
+    "name": "Орхан",
+    "race": "human",
+    "class": "fighter",
+    "level": 1,
+    "background": "Folk Hero",
+    "abilities": {
+      "strength": 17,
+      "dexterity": 12,
+      "constitution": 15,
+      "intelligence": 13,
+      "wisdom": 14,
+      "charisma": 16
+    },
+    "hitPoints": {
+      "current": 12,
+      "maximum": 12,
+      "temporary": 0
+    },
+    "armorClass": 11,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "skills": {
+      "athletics": 5,
+      "acrobatics": 0,
+      "sleight_of_hand": 0,
+      "stealth": 0,
+      "arcana": 1,
+      "history": 1,
+      "investigation": 1,
+      "nature": 1,
+      "religion": 1,
+      "animal_handling": 1,
+      "insight": 1,
+      "medicine": 1,
+      "perception": 1,
+      "survival": 1,
+      "deception": 2,
+      "intimidation": 4,
+      "performance": 2,
+      "persuasion": 2
+    },
+    "savingThrows": {
+      "strength": 5,
+      "dexterity": 0,
+      "constitution": 4,
+      "intelligence": 1,
+      "wisdom": 1,
+      "charisma": 2
+    },
+    "roomId": "default_room",
+    "playerName": "as",
+    "created": "2025-09-03T21:56:18.841Z",
+    "lastUpdated": "2025-09-03T21:56:18.841Z"
+  }
+]
