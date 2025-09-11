@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { GameChat } from '@/components/GameChat';
 import { CharacterCreationWizard } from '@/components/CharacterCreation';
+import { VoicePanel } from '@/components/VoiceChat';
 import { charactersApi, Character } from '@/utils/charactersApi';
 
 export default function RoomPage() {
@@ -278,29 +279,10 @@ export default function RoomPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-200px)]">
           {/* Left Panel - Voice Chat */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-800 rounded-lg p-4 h-full">
-              <h3 className="text-lg font-semibold mb-4">🎙️ Игроки</h3>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2 p-2 bg-gray-700 rounded">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span>{playerName} (вы)</span>
-                </div>
-                <div className="text-gray-500 text-sm">
-                  Ожидание других игроков...
-                </div>
-              </div>
-              
-              {/* Статус ИИ-мастера */}
-              <div className="mt-4 p-3 bg-blue-900/50 rounded">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm">🎭 ИИ-мастер готов</span>
-                </div>
-                <p className="text-xs text-gray-400 mt-1">
-                  Claude 3.5 Sonnet + Tool Calling
-                </p>
-              </div>
-            </div>
+            <VoicePanel 
+              roomId={roomId}
+              playerName={playerName}
+            />
           </div>
 
           {/* Center Panel - Game Chat */}

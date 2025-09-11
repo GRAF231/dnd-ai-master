@@ -21,6 +21,7 @@ interface VoiceRoom {
 interface ParticipantInfo {
   socketId: string;
   roomId: string | null;
+  playerName: string | null;
   joinedAt: Date;
 }
 
@@ -42,12 +43,13 @@ export class SignalingService {
     this.participants.set(socket.id, {
       socketId: socket.id,
       roomId: null,
+      playerName: null,
       joinedAt: new Date()
     });
 
     // Присоединение к голосовой комнате
-    socket.on(VOICE_ACTIONS.JOIN, (data: { room: string }) => {
-      this.joinRoom(socket, data.room);
+    socket.on(VOICE_ACTIONS.JOIN, (data: { room: string; playerName?: string }) => {
+      this.joinRoom(socket, data.room, data.playerName);
     });
 
     // Покидание голосовой комнаты
@@ -83,14 +85,20 @@ export class SignalingService {
   /**
    * Присоединение к голосовой комнате
    */
-  private joinRoom(socket: Socket, roomId: string): void {
-    console.log(`👥 ${socket.id} joining voice room: ${roomId}`);
+  private joinRoom(socket: Socket, roomId: string, playerName?: string): void {
+    console.log(`👥 ${socket.id} (${playerName || 'Unknown'}) joining voice room: ${roomId}`);
 
     // Проверяем, не находится ли уже в комнате
     const participant = this.participants.get(socket.id);
     if (participant?.roomId) {
       console.warn(`${socket.id} already in room ${participant.roomId}`);
       return;
+    }
+
+    // Сохраняем имя игрока
+    if (participant && playerName) {
+      participant.playerName = playerName;
+      this.participants.set(socket.id, participant);
     }
 
     // Создаем комнату если не существует
@@ -108,16 +116,20 @@ export class SignalingService {
 
     // Уведомляем существующих участников о новом пире
     existingParticipants.forEach(participantId => {
+      const existingParticipant = this.participants.get(participantId);
+      
       // Говорим существующему участнику добавить нового пира (без создания offer)
       socket.to(participantId).emit(VOICE_ACTIONS.ADD_PEER, {
         peerID: socket.id,
-        createOffer: false
+        createOffer: false,
+        playerName: playerName
       });
 
       // Говорим новому участнику добавить существующего пира (с созданием offer)
       socket.emit(VOICE_ACTIONS.ADD_PEER, {
         peerID: participantId,
-        createOffer: true
+        createOffer: true,
+        playerName: existingParticipant?.playerName
       });
     });
 
